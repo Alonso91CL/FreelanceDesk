@@ -49,7 +49,7 @@ export function createPaymentRequestDoc(data: PaymentRequestData): TDocumentDefi
           },
         ],
       },
-      { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 2, lineColor: '#1f2937' }], margin: [0, 16, 0, 16] },
+      { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5, lineColor: '#1f2937' }], margin: [0, 16, 0, 16] },
       {
         columns: [
           {
@@ -106,9 +106,10 @@ export function createPaymentRequestDoc(data: PaymentRequestData): TDocumentDefi
           ],
         },
         layout: {
-          hLineColor: (i: number) => (i === 0 || i === 1 ? '#d1d5db' : i === 5 ? '#374151' : '#e5e7eb'),
-          vLineColor: () => 'transparent',
-          hLineWidth: (i: number) => (i === 0 ? 0 : i === 5 ? 0.75 : 0.5),
+          hLineWidth: (i: number) => (i === 0 || i === 5 ? 0 : i === 1 ? 0.6 : 0.3),
+          vLineWidth: () => 0,
+          hLineColor: (i: number) => (i === 1 ? '#d1d5db' : i === 5 ? '#1f2937' : '#e5e7eb'),
+          vLineColor: () => '#e5e7eb',
           paddingLeft: () => 12,
           paddingRight: () => 12,
           paddingTop: () => 8,
@@ -127,7 +128,7 @@ export function createPaymentRequestDoc(data: PaymentRequestData): TDocumentDefi
         margin: [0, 4, 0, 24],
       },
       {
-        canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#d1d5db' }],
+        canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.3, lineColor: '#d1d5db' }],
         margin: [0, 0, 0, 12],
       },
       {
