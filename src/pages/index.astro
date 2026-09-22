@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Calculator from '../components/Calculator';
+---
+
+<Layout title="Calculadora & Solicitud de Pago - AlonsoDev">
+  <main>
+    <Calculator client:only="react" />
+  </main>
+</Layout>

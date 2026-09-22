@@ -1,0 +1,9 @@
+{
+  "skills": {
+    "directory": ".opencode/skills"
+  },
+  "agent": {
+    "name": "opencode",
+    "mode": "interactive"
+  }
+}
