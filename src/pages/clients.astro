@@ -1,5 +1,6 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
+import ClientsApp from '../components/clients/ClientsApp';
 
 const breadcrumbs = [
   { label: 'Dashboard', href: '/dashboard' },
@@ -8,8 +9,5 @@ const breadcrumbs = [
 ---
 
 <AppLayout title="Clientes" breadcrumbs={breadcrumbs}>
-  <div class="card p-8 text-center">
-    <h2 class="text-xl font-semibold mb-2">Gestión de Clientes</h2>
-    <p class="text-gray-400 text-sm">CRUD de clientes en desarrollo.</p>
-  </div>
+  <ClientsApp client:only="react" />
 </AppLayout>
