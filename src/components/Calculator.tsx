@@ -93,7 +93,7 @@ function CalculatorInner() {
     []
   );
 
-  const handleDownloadPdf = async () => {
+  const handleDownloadPdf = () => {
     if (!result || isGeneratingPdf) return;
     setIsGeneratingPdf(true);
     try {
@@ -112,7 +112,7 @@ function CalculatorInner() {
         },
       };
 
-      await downloadPaymentRequestPdf(pdfData);
+      downloadPaymentRequestPdf(pdfData);
 
       setSolicitudId(generateSolicitudId());
       showToast('PDF descargado exitosamente', 'success');

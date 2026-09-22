@@ -744,13 +744,22 @@ export function createReminderDoc(data: ReminderData): TDocumentDefinitions {
   };
 }
 
-export async function downloadPaymentRequestPdf(data: PaymentRequestData): Promise<void> {
-  const pdfmakeModule = await import('pdfmake');
-  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
+declare global {
+  interface Window {
+    pdfMake: any;
+  }
+}
 
-  const pdfMake = pdfmakeModule.default as any;
-  const fonts = pdfFontsModule.default as any;
-  pdfMake.vfs = fonts.vfs || fonts;
+function getPdfMake(): any {
+  return window.pdfMake;
+}
+
+export function downloadPaymentRequestPdf(data: PaymentRequestData): void {
+  const pdfMake = getPdfMake();
+  if (!pdfMake) {
+    console.error('pdfMake not loaded');
+    return;
+  }
 
   const docDefinition = createPaymentRequestDoc(data);
   const filename = `Solicitud_Pago_${(data.clientName || 'cliente').replace(/\s+/g, '_')}_${Date.now()}.pdf`;
@@ -758,13 +767,12 @@ export async function downloadPaymentRequestPdf(data: PaymentRequestData): Promi
   pdfMake.createPdf(docDefinition).download(filename);
 }
 
-export async function downloadQuotePdf(data: QuoteData): Promise<void> {
-  const pdfmakeModule = await import('pdfmake');
-  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
-
-  const pdfMake = pdfmakeModule.default as any;
-  const fonts = pdfFontsModule.default as any;
-  pdfMake.vfs = fonts.vfs || fonts;
+export function downloadQuotePdf(data: QuoteData): void {
+  const pdfMake = getPdfMake();
+  if (!pdfMake) {
+    console.error('pdfMake not loaded');
+    return;
+  }
 
   const docDefinition = createQuoteDoc(data);
   const filename = `Cotizacion_${data.quoteId}_${Date.now()}.pdf`;
@@ -772,13 +780,12 @@ export async function downloadQuotePdf(data: QuoteData): Promise<void> {
   pdfMake.createPdf(docDefinition).download(filename);
 }
 
-export async function downloadReminderPdf(data: ReminderData): Promise<void> {
-  const pdfmakeModule = await import('pdfmake');
-  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
-
-  const pdfMake = pdfmakeModule.default as any;
-  const fonts = pdfFontsModule.default as any;
-  pdfMake.vfs = fonts.vfs || fonts;
+export function downloadReminderPdf(data: ReminderData): void {
+  const pdfMake = getPdfMake();
+  if (!pdfMake) {
+    console.error('pdfMake not loaded');
+    return;
+  }
 
   const docDefinition = createReminderDoc(data);
   const filename = `Recordatorio_${data.reminderId}_${Date.now()}.pdf`;

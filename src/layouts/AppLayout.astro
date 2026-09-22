@@ -1,4 +1,5 @@
 ---
+import '../styles/globals.css';
 import Sidebar, { MobileNav } from '../components/layout/Sidebar';
 import Topbar from '../components/layout/Topbar';
 
@@ -15,6 +16,13 @@ const { title, breadcrumbs } = Astro.props as {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline src="/pdfmake/pdfmake.min.js"></script>
+    <script is:inline src="/pdfmake/vfs_fonts.js"></script>
+    <script is:inline>
+      if (window.pdfMake && window.pdfMake.addVirtualFileSystem) {
+        window.pdfMake.addVirtualFileSystem(window._pdfmakeVfs || {});
+      }
+    </script>
     <title>{title} — FreelanceDesk</title>
   </head>
   <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
