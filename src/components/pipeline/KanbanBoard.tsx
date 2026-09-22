@@ -28,9 +28,10 @@ interface KanbanBoardProps {
   clients: Client[];
   onMoveDeal: (dealId: string, newStatus: DealStatus) => void;
   dragEnabled: boolean;
+  onDealClick: (dealId: string) => void;
 }
 
-export default function KanbanBoard({ deals, clients, onMoveDeal, dragEnabled }: KanbanBoardProps) {
+export default function KanbanBoard({ deals, clients, onMoveDeal, dragEnabled, onDealClick }: KanbanBoardProps) {
   const [draggedDealId, setDraggedDealId] = useState<string | null>(null);
 
   const clientMap = useMemo(() => {
@@ -77,6 +78,7 @@ export default function KanbanBoard({ deals, clients, onMoveDeal, dragEnabled }:
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
           draggedDealId={draggedDealId}
+          onDealClick={onDealClick}
         />
       ))}
     </div>

@@ -13,6 +13,7 @@ interface KanbanColumnProps {
   onDragStart: (dealId: string) => void;
   onDragEnd: () => void;
   draggedDealId: string | null;
+  onDealClick: (dealId: string) => void;
 }
 
 export default function KanbanColumn({
@@ -26,6 +27,7 @@ export default function KanbanColumn({
   onDragStart,
   onDragEnd,
   draggedDealId,
+  onDealClick,
 }: KanbanColumnProps) {
   const [dragOver, setDragOver] = useState(false);
 
@@ -85,6 +87,7 @@ export default function KanbanColumn({
                 onDragStart(deal.id);
               }}
               onDragEnd={onDragEnd}
+              onClick={() => onDealClick(deal.id)}
               className={`${draggedDealId === deal.id && dragEnabled ? 'opacity-50' : ''}`}
             >
               <DealCard
