@@ -4,7 +4,7 @@ import { calculateReverse, isValidCalculation } from '../lib/calculations';
 import { formatCurrency } from '../lib/formatters';
 import { ToastProvider, useToast } from './Toast';
 import type { MindicadorAPIResponse } from './api';
-import { generatePaymentRequestPdf, type PaymentRequestData } from '../lib/pdf';
+import { downloadPaymentRequestPdf, type PaymentRequestData } from '../lib/pdf';
 
 const FALLBACK_USD_RATE = 900;
 const SII_DEFAULT = 15.25;
@@ -112,12 +112,10 @@ function CalculatorInner() {
         },
       };
 
-      const blob = await generatePaymentRequestPdf(pdfData);
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      await downloadPaymentRequestPdf(pdfData);
 
       setSolicitudId(generateSolicitudId());
-      showToast('PDF generado exitosamente', 'success');
+      showToast('PDF descargado exitosamente', 'success');
     } catch (error) {
       console.error('Error generating PDF:', error);
       showToast('Error al generar el PDF. Revisa la consola para más detalles.', 'error');

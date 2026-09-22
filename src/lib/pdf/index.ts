@@ -236,21 +236,22 @@ export function createPaymentRequestDoc(data: PaymentRequestData): TDocumentDefi
       legalText: {},
     },
     defaultStyle: {
-      font: 'Helvetica',
+      font: 'Roboto',
     },
     pageMargins: [40, 50, 40, 50],
   };
 }
 
-export async function generatePaymentRequestPdf(data: PaymentRequestData): Promise<Blob> {
-  const pdfMake = await import('pdfmake/build/pdfmake');
-  const pdfFonts = await import('pdfmake/build/vfs_fonts');
+export async function downloadPaymentRequestPdf(data: PaymentRequestData): Promise<void> {
+  const pdfmakeModule = await import('pdfmake');
+  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
 
-  (pdfMake as any).default.vfs = (pdfFonts as any).default.pdfMake.vfs;
+  const pdfMake = pdfmakeModule.default as any;
+  const fonts = pdfFontsModule.default as any;
+  pdfMake.vfs = fonts.vfs || fonts;
 
   const docDefinition = createPaymentRequestDoc(data);
-  return new Promise((resolve) => {
-    const pdfDoc = (pdfMake as any).default.createPdf(docDefinition);
-    pdfDoc.getBlob((blob: Blob) => resolve(blob));
-  });
+  const filename = `Solicitud_Pago_${(data.clientName || 'cliente').replace(/\s+/g, '_')}_${Date.now()}.pdf`;
+
+  pdfMake.createPdf(docDefinition).download(filename);
 }
