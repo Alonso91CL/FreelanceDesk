@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import type { Deal, Client, DealStatus } from '../../lib/db/types';
 import KanbanColumn from './KanbanColumn';
 
@@ -61,6 +61,16 @@ export default function KanbanBoard({ deals, clients, onMoveDeal, dragEnabled, o
 
   const handleDragEnd = useCallback(() => {
     setDraggedDealId(null);
+  }, []);
+
+  useEffect(() => {
+    setDraggedDealId(null);
+  }, [deals]);
+
+  useEffect(() => {
+    const handleGlobalDragEnd = () => setDraggedDealId(null);
+    document.addEventListener('dragend', handleGlobalDragEnd);
+    return () => document.removeEventListener('dragend', handleGlobalDragEnd);
   }, []);
 
   return (
