@@ -1,0 +1,15 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+
+const breadcrumbs = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Pipeline' },
+];
+---
+
+<AppLayout title="Pipeline" breadcrumbs={breadcrumbs}>
+  <div class="card p-8 text-center">
+    <h2 class="text-xl font-semibold mb-2">Pipeline Kanban</h2>
+    <p class="text-gray-400 text-sm">Vista de pipeline en desarrollo.</p>
+  </div>
+</AppLayout>

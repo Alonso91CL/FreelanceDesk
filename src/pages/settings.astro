@@ -1,0 +1,13 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import SettingsApp from '../components/settings/SettingsApp';
+
+const breadcrumbs = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Configuración' },
+];
+---
+
+<AppLayout title="Configuración" breadcrumbs={breadcrumbs}>
+  <SettingsApp client:only="react" />
+</AppLayout>

@@ -1,0 +1,15 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+
+const breadcrumbs = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Clientes' },
+];
+---
+
+<AppLayout title="Clientes" breadcrumbs={breadcrumbs}>
+  <div class="card p-8 text-center">
+    <h2 class="text-xl font-semibold mb-2">Gestión de Clientes</h2>
+    <p class="text-gray-400 text-sm">CRUD de clientes en desarrollo.</p>
+  </div>
+</AppLayout>

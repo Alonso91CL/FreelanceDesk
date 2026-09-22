@@ -1,0 +1,15 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+
+const breadcrumbs = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Seguimiento' },
+];
+---
+
+<AppLayout title="Seguimiento" breadcrumbs={breadcrumbs}>
+  <div class="card p-8 text-center">
+    <h2 class="text-xl font-semibold mb-2">Follow-ups</h2>
+    <p class="text-gray-400 text-sm">Sistema de seguimiento en desarrollo.</p>
+  </div>
+</AppLayout>

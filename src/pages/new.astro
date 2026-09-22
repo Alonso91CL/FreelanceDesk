@@ -2,7 +2,10 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import Calculator from '../components/Calculator';
 
-const breadcrumbs = [{ label: 'Nueva Solicitud' }];
+const breadcrumbs = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Nueva Solicitud' },
+];
 ---
 
 <AppLayout title="Nueva Solicitud" breadcrumbs={breadcrumbs}>

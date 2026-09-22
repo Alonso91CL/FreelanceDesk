@@ -24,6 +24,7 @@
     "@astrojs/react": "^7.0.0",
     "@tailwindcss/postcss": "^4.3.3",
     "astro": "^7.3.4",
+    "lucide-react": "^1.47.0",
     "pdfmake": "^0.3.11",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

@@ -1,0 +1,15 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+
+const breadcrumbs = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Tiempos' },
+];
+---
+
+<AppLayout title="Tiempos" breadcrumbs={breadcrumbs}>
+  <div class="card p-8 text-center">
+    <h2 class="text-xl font-semibold mb-2">Control de Tiempos</h2>
+    <p class="text-gray-400 text-sm">Registro de horas en desarrollo.</p>
+  </div>
+</AppLayout>
