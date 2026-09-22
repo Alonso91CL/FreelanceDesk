@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "astro": {
+      "source": "sickn33/agentic-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/astro/SKILL.md",
+      "computedHash": "1071d32bd30e64486137a893e8ba3855f5a853d1756d608fdc80958fe9b52e0c"
+    },
+    "clean-code": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "skillPath": "skills/.experimental/clean-code/SKILL.md",
+      "computedHash": "f6650d6d6a0914913940eb08e8d72b8d075bee207aa3886159d6c30dd7525f25"
+    },
+    "coding-standards": {
+      "source": "affaan-m/ecc",
+      "sourceType": "github",
+      "skillPath": "skills/coding-standards/SKILL.md",
+      "computedHash": "94f8d33db00faef148fb7a9f88c2e37e4d2afe109cdb9978b06fe280892de405"
+    },
+    "react-dev": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "skillPath": "skills/react-dev/SKILL.md",
+      "computedHash": "da3caa5f2bfd7274fad3f08524ff3ad4f427978773c3e77e7b14e44aaac31d78"
+    }
+  }
+}

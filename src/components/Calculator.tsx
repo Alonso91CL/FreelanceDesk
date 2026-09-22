@@ -4,6 +4,7 @@ import { calculateReverse, isValidCalculation } from '../lib/calculations';
 import { formatCurrency } from '../lib/formatters';
 import { ToastProvider, useToast } from './Toast';
 import type { MindicadorAPIResponse } from './api';
+import { generatePaymentRequestPdf, type PaymentRequestData } from '../lib/pdf';
 
 const FALLBACK_USD_RATE = 900;
 const SII_DEFAULT = 15.25;
@@ -92,118 +93,33 @@ function CalculatorInner() {
     []
   );
 
-  const generatePdfHtml = () => {
-    const netFormatted = result ? formatCurrency(form.netAmount, form.currency) : '0.00';
-    const siiFormatted = result ? formatCurrency(result.montoSii, form.currency) : '0.00';
-    const paypalFormatted = result ? formatCurrency(result.montoPaypal, form.currency) : '0.00';
-    const totalFormatted = result ? formatCurrency(result.brutoTotal, form.currency) : '0.00';
-    const siiPercentFormatted = form.siiPercent.toFixed(2);
-
-    return `
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Solicitud de Pago - ${form.clientName || 'Cliente'}</title>
-  <script src="https://cdn.tailwindcss.com"><\/script>
-  <style>
-    @page { size: A4; margin: 0; }
-    body { margin: 0; padding: 0; }
-  </style>
-</head>
-<body class="bg-white text-black p-10">
-  <div class="flex justify-between items-start border-b-2 border-gray-800 pb-6 mb-6">
-    <div class="mr-6">
-      <h1 class="text-3xl font-black uppercase tracking-wider text-gray-900">Solicitud de Pago</h1>
-      <p class="text-gray-600 font-medium mt-1">AlonsoDev - Servicios de Desarrollo</p>
-      <p class="text-gray-500 text-sm mt-2">N° Solicitud: ${solicitudId}</p>
-    </div>
-    <div class="text-right text-sm flex-shrink-0">
-      <p class="font-bold">Fecha de Emisión:</p>
-      <p class="text-gray-700">${new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-      <p class="font-bold mt-2">Moneda:</p>
-      <p class="text-gray-700">${form.currency}</p>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
-    <div>
-      <h3 class="font-bold text-gray-800 border-b border-gray-300 pb-1 mb-2">Emitido por:</h3>
-      <p class="font-semibold text-gray-900">AlonsoDev</p>
-      <p class="text-gray-600">Desarrollo de Software</p>
-    </div>
-    <div>
-      <h3 class="font-bold text-gray-800 border-b border-gray-300 pb-1 mb-2">Cobrar a:</h3>
-      <p class="font-semibold text-gray-900">${form.clientName || '[Nombre del Cliente]'}</p>
-    </div>
-  </div>
-
-  <div class="mb-8">
-    <h3 class="font-bold text-gray-800 border-b border-gray-300 pb-1 mb-2 text-sm">Concepto del Servicio:</h3>
-    <p class="text-gray-700 bg-gray-50 p-3 rounded border border-gray-100">${form.serviceDesc || '[Descripción del servicio]'}</p>
-  </div>
-
-  <table class="w-full mb-8 text-left border-collapse">
-    <thead>
-      <tr class="bg-gray-100 border-b-2 border-gray-300">
-        <th class="py-3 px-4 font-bold text-sm text-gray-800">Descripción</th>
-        <th class="py-3 px-4 font-bold text-sm text-gray-800 text-right">Monto</th>
-      </tr>
-    </thead>
-    <tbody class="text-sm">
-      <tr class="border-b border-gray-200">
-        <td class="py-3 px-4 text-gray-700">Honorarios Netos Acordados</td>
-        <td class="py-3 px-4 text-right font-medium">${netFormatted}</td>
-      </tr>
-      <tr class="border-b border-gray-200">
-        <td class="py-3 px-4 text-gray-700">Impuestos Honorarios (SII - Retenci\u00F3n ${siiPercentFormatted}%)</td>
-        <td class="py-3 px-4 text-right font-medium text-gray-500">${siiFormatted}</td>
-      </tr>
-      <tr class="border-b border-gray-200">
-        <td class="py-3 px-4 text-gray-700">Cobertura Comisiones de Procesamiento (PayPal)</td>
-        <td class="py-3 px-4 text-right font-medium text-gray-500">${paypalFormatted}</td>
-      </tr>
-      <tr class="bg-gray-50 font-bold text-base border-b-2 border-gray-800">
-        <td class="py-4 px-4 text-gray-900 text-right">TOTAL A TRANSFERIR:</td>
-        <td class="py-4 px-4 text-right text-gray-900">${totalFormatted}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="mb-12 text-sm">
-    <h3 class="font-bold text-gray-800 mb-2">Instrucciones de Pago:</h3>
-    <p class="text-gray-600">Por favor, enviar el <strong>TOTAL A TRANSFERIR</strong> exacto a través de PayPal para asegurar la correcta recepción de los honorarios y coberturas correspondientes.</p>
-  </div>
-
-  <div class="mt-8 border-t border-gray-300 pt-4 text-xs text-justify text-gray-500 leading-relaxed">
-    <strong>AVISO LEGAL:</strong> El presente documento es una <strong>solicitud de pago proforma</strong> generada con fines exclusivamente administrativos e informativos para facilitar la transacción de pago internacional. <strong>ESTE DOCUMENTO NO CONSTITUYE UN DOCUMENTO FISCAL, FACTURA, NI BOLETA DE HONORARIOS.</strong> Las obligaciones tributarias en Chile (como la emisión de la respectiva Boleta de Honorarios Electrónica al Servicio de Impuestos Internos - SII) serán procesadas y declaradas de manera independiente una vez que los fondos hayan sido recibidos y liquidados por el prestador del servicio.
-  </div>
-</body>
-</html>
-    `;
-  };
-
   const handleDownloadPdf = async () => {
     if (!result || isGeneratingPdf) return;
     setIsGeneratingPdf(true);
     try {
-      const html = generatePdfHtml();
-      const response = await fetch('/api/pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html }),
-      });
+      const pdfData: PaymentRequestData = {
+        solicitudId,
+        clientName: form.clientName,
+        serviceDesc: form.serviceDesc,
+        currency: form.currency,
+        date: new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' }),
+        result,
+        netAmount: form.netAmount,
+        siiPercent: form.siiPercent,
+        profile: {
+          name: 'AlonsoDev',
+          company: 'Desarrollo de Software',
+        },
+      };
 
-      if (!response.ok) throw new Error('PDF generation failed');
-
-      const blob = await response.blob();
+      const blob = await generatePaymentRequestPdf(pdfData);
       const url = URL.createObjectURL(blob);
       window.open(url, '_blank');
 
       setSolicitudId(generateSolicitudId());
       showToast('PDF generado exitosamente', 'success');
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error('Error generating PDF:', error);
       showToast('Error al generar el PDF. Revisa la consola para más detalles.', 'error');
     } finally {
       setIsGeneratingPdf(false);
