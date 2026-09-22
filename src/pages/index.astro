@@ -1,10 +1,10 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import Calculator from '../components/Calculator';
+import DashboardApp from '../components/dashboard/DashboardApp';
 
-const breadcrumbs = [{ label: 'Nueva Solicitud' }];
+const breadcrumbs = [{ label: 'Dashboard' }];
 ---
 
-<AppLayout title="Nueva Solicitud" breadcrumbs={breadcrumbs}>
-  <Calculator client:only="react" />
+<AppLayout title="Dashboard" breadcrumbs={breadcrumbs}>
+  <DashboardApp client:only="react" />
 </AppLayout>
